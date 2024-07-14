@@ -1,8 +1,34 @@
 // Defining text characters for the empty and full hearts for you to use later.
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
+function handleHeartClick(event) {
+  const heart = event.target;
+  if (heart.textContent === EMPTY_HEART) {
+    mimicServerCall()
+      .then(() => {
+        heart.textContent = FULL_HEART;
+        heart.classList.add('activated-heart');
+      })
+      .catch(error => {
+        const modal = document.getElementById('modal');
+        const modalMessage = document.getElementById('modal-message');
+        modalMessage.textContent = error;
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 3000);
+      });
+  } else {
+    heart.textContent = EMPTY_HEART;
+    heart.classList.remove('activated-heart');
+  }
+}
 
-// Your JavaScript code goes here!
+
+// Attach event listeners to all hearts
+document.querySelectorAll('.heart').forEach(heart => {
+  heart.addEventListener('click', handleHeartClick);
+});
 
 
 
